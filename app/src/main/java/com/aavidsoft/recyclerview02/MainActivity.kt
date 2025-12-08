@@ -5,19 +5,21 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.aavidsoft.recyclerview02.adapters.CitiesAdapter
 import com.aavidsoft.recyclerview02.models.City
 
 class MainActivity : AppCompatActivity() {
     private val cities = arrayListOf(
-        City("Mumbai", R.drawable.mumbai, 20411000),
+        City("Mumbai \n Capital of Maharashtra and economical capital of India", R.drawable.mumbai, 20411000),
         City("Delhi", R.drawable.delhi, 19000000),
         City("Bengaluru", R.drawable.bengaluru, 12700000),
         City("Hyderabad", R.drawable.hyderabad, 10500000),
         City("Ahmedabad", R.drawable.ahmedabad, 8400000),
-        City("Chennai", R.drawable.chennai, 11300000),
+        City("Chennai \n Capital of Tamilnadu", R.drawable.chennai, 11300000),
         City("Kolkata", R.drawable.kolkata, 14600000),
         City("Pune", R.drawable.pune, 7430000),
         City("Jaipur", R.drawable.jaipur, 4000000),
@@ -26,7 +28,7 @@ class MainActivity : AppCompatActivity() {
         City("Lucknow", R.drawable.lucknow, 3600000),
         City("Kanpur", R.drawable.kanpur, 3200000),
         City("Nagpur", R.drawable.nagpur, 2900000),
-        City("Indore", R.drawable.indore, 3100000),
+        City("Indore - Cleanest city of India", R.drawable.indore, 3100000),
         City("Thane", R.drawable.thane, 1800000),
         City("Bhopal", R.drawable.bhopal, 2500000),
         City("Visakhapatnam", R.drawable.visakhapatnam, 2300000),
@@ -54,7 +56,9 @@ class MainActivity : AppCompatActivity() {
 
 
         recyclerCities = findViewById(R.id.recyclerCities)
-        recyclerCities.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        //recyclerCities.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        //recyclerCities.layoutManager = GridLayoutManager(this, 3)
+        recyclerCities.layoutManager = StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL)
 
         citiesAdapter = CitiesAdapter(cities)
         recyclerCities.adapter = citiesAdapter
