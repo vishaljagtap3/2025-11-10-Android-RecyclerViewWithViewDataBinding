@@ -10,37 +10,42 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.aavidsoft.recyclerview02.R
+import com.aavidsoft.recyclerview02.databinding.AdvLayoutBinding
+import com.aavidsoft.recyclerview02.databinding.CityLayoutBinding
+import com.aavidsoft.recyclerview02.models.Advertisement
 import com.aavidsoft.recyclerview02.models.City
 import org.w3c.dom.Text
 import java.util.Random
 
 class CitiesAdapter(
-    private val cities: ArrayList<City>
-) : RecyclerView.Adapter<CitiesAdapter.CityViewHolder>() {
+    private val cities: ArrayList<City>,
+    private val advertisements: ArrayList<Advertisement>
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
+    val VIEW_TYPE_POST = 1
+    val VIEW_TYPE_ADV = 2
 
     inner class CityViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val txtCityName: TextView = view.findViewById(R.id.txtCityName)
-        val imgCity: ImageView = view.findViewById(R.id.imgCity)
-        val txtCityPopulation: TextView = view.findViewById(R.id.txtCityPopulation)
+        val cityLayoutBinding = CityLayoutBinding.bind(view)
 
         init {
-            txtCityName.setOnClickListener {
-                Toast.makeText(it.context, "${cities[adapterPosition].title}", Toast.LENGTH_LONG)
+            cityLayoutBinding.txtCityName.setOnClickListener {
+                Toast.makeText(it.context, "${cities[adapterPosition/2].title}", Toast.LENGTH_LONG)
                     .show()
             }
 
-            txtCityPopulation.setOnClickListener {
+            cityLayoutBinding.txtCityPopulation.setOnClickListener {
                 Toast.makeText(
                     it.context,
-                    "${cities[adapterPosition].title} ${cities[adapterPosition].population}",
+                    "${cities[adapterPosition/2].title} ${cities[adapterPosition/2].population}",
                     Toast.LENGTH_LONG
                 ).show()
             }
 
-            imgCity.setOnClickListener {
+            cityLayoutBinding.imgCity.setOnClickListener {
                 Toast.makeText(
                     it.context,
-                    "${cities[adapterPosition].title} image",
+                    "${cities[adapterPosition/2].title} image",
                     Toast.LENGTH_LONG
                 ).show()
             }
@@ -50,29 +55,60 @@ class CitiesAdapter(
         }
     }
 
-    override fun getItemCount() = cities.size
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CityViewHolder {
-        val layoutInflater = LayoutInflater.from(parent.context)
-        val view = layoutInflater.inflate(R.layout.city_layout1, null)
-
-        val random = Random()
-        view.setBackgroundColor(
-            Color.argb(
-                89,
-                Math.abs(random.nextInt()) % 256,
-                Math.abs(random.nextInt()) % 256,
-                Math.abs(random.nextInt()) % 256
-            )
-        )
-
-        return CityViewHolder(view)
+    inner class AdvViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        val advLayoutBinding = AdvLayoutBinding.bind(view)
+        init {
+            advLayoutBinding.txtAdvTitle.setOnClickListener {
+                //Do something here
+            }
+        }
     }
 
-    override fun onBindViewHolder(holder: CityViewHolder, position: Int) {
-        val city = cities[position]
-        holder.imgCity.setImageResource(city.imageResourceId)
-        holder.txtCityName.text = city.title
-        holder.txtCityPopulation.text = "${city.population}"
+    override fun getItemCount() = cities.size + advertisements.size
+
+    override fun getItemViewType(position: Int): Int {
+        return if (position % 2 == 0) {
+            VIEW_TYPE_POST
+        } else {
+            VIEW_TYPE_ADV
+        }
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        if (viewType == VIEW_TYPE_POST) {
+            val layoutInflater = LayoutInflater.from(parent.context)
+            val view = layoutInflater.inflate(R.layout.city_layout, null)
+
+            val random = Random()
+            view.setBackgroundColor(
+                Color.argb(
+                    89,
+                    Math.abs(random.nextInt()) % 256,
+                    Math.abs(random.nextInt()) % 256,
+                    Math.abs(random.nextInt()) % 256
+                )
+            )
+
+            return CityViewHolder(view)
+        }
+
+
+        val layoutInflater = LayoutInflater.from(parent.context)
+        val view = layoutInflater.inflate(R.layout.adv_layout, null)
+        return AdvViewHolder(view)
+
+    }
+
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        if (holder is CityViewHolder) {
+            holder.cityLayoutBinding.city = cities[position/2]
+            /*holder.cityLayoutBinding.imgCity.setImageResource(city.imageResourceId)
+            holder.cityLayoutBinding.txtCityName.text = city.title
+            holder.cityLayoutBinding.txtCityPopulation.text = "${city.population}"*/
+        }
+
+        if(holder is AdvViewHolder) {
+            holder.advLayoutBinding.txtAdvTitle.text = advertisements[position/2].title
+        }
     }
 }
