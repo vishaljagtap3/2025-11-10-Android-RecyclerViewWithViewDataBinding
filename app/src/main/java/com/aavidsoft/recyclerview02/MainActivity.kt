@@ -15,8 +15,12 @@ import com.aavidsoft.recyclerview02.models.Advertisement
 import com.aavidsoft.recyclerview02.models.City
 
 class MainActivity : AppCompatActivity() {
-    private val cities = arrayListOf(
-        City("Mumbai \n Capital of Maharashtra and economical capital of India", R.drawable.mumbai, 20411000),
+   private val cities = arrayListOf(
+        City(
+            "Mumbai \n Capital of Maharashtra and economical capital of India",
+            R.drawable.mumbai,
+            20411000
+        ),
         City("Delhi", R.drawable.delhi, 19000000),
         City("Bengaluru", R.drawable.bengaluru, 12700000),
         City("Hyderabad", R.drawable.hyderabad, 10500000),
@@ -26,7 +30,6 @@ class MainActivity : AppCompatActivity() {
         City("Pune", R.drawable.pune, 7430000),
         City("Jaipur", R.drawable.jaipur, 4000000),
         City("Surat", R.drawable.surat, 6800000),
-
         City("Lucknow", R.drawable.lucknow, 3600000),
         City("Kanpur", R.drawable.kanpur, 3200000),
         City("Nagpur", R.drawable.nagpur, 2900000),
@@ -37,7 +40,6 @@ class MainActivity : AppCompatActivity() {
         City("Patna", R.drawable.patna, 2100000),
         City("Vadodara", R.drawable.vadodara, 2100000),
         City("Ghaziabad", R.drawable.ghaziabad, 2400000),
-
         City("Ludhiana", R.drawable.ludhiana, 1600000),
         City("Agra", R.drawable.agra, 1700000),
         City("Nashik", R.drawable.nashik, 1500000),
@@ -64,8 +66,34 @@ class MainActivity : AppCompatActivity() {
         Advertisement(12, "Big Bazaar Weekend Offer"),
         Advertisement(13, "Movie Tickets @ ₹99"),
         Advertisement(14, "Festival Special Jewellery Discount"),
+        Advertisement(15, "New Restaurant Opening Offer"),
+        Advertisement(1, "50% Off on Electronics"),
+        Advertisement(2, "Buy 1 Get 1 Free – Pizza Deal"),
+        Advertisement(3, "Holiday Sale – Up to 70% Off"),
+        Advertisement(4, "New Arrivals: Fashion Trends 2025"),
+        Advertisement(5, "Mega Furniture Clearance"),
+        Advertisement(6, "Exclusive Travel Packages"),
+        Advertisement(7, "Flash Sale – Limited Time Only"),
+        Advertisement(8, "Gym Membership Discount"),
+        Advertisement(9, "Free Home Delivery on Orders Above ₹499"),
+        Advertisement(10, "Smartphone Exchange Offer"),
+        Advertisement(11, "Kids Toys Winter Sale"),
+        Advertisement(12, "Big Bazaar Weekend Offer"),
+        Advertisement(13, "Movie Tickets @ ₹99"),
+        Advertisement(14, "Festival Special Jewellery Discount"),
         Advertisement(15, "New Restaurant Opening Offer")
     )
+
+    /*private val cities = arrayListOf(
+        City(
+            "Mumbai \n Capital of Maharashtra and economical capital of India",
+            R.drawable.mumbai,
+            20411000
+        )
+    )
+    val advertisements = arrayListOf(
+        Advertisement(1, "50% Off on Electronics")
+    )*/
     private lateinit var citiesAdapter: CitiesAdapter
 
     private lateinit var binding: ActivityMainBinding
@@ -75,7 +103,26 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.recyclerCities.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        binding.btnAddCity.setOnClickListener {
+            cities.add(
+                City(
+                    binding.edtCityTitle.text.toString(),
+                    R.drawable.ic_launcher_background,
+                    binding.edtCityPopulation.text.toString().toLong()
+                    )
+            )
+            advertisements.add(
+                Advertisement(
+                    45,
+                    "Advertisement for ${binding.edtCityTitle.text.toString()}"
+                )
+            )
+            //citiesAdapter.notifyDataSetChanged()
+            citiesAdapter.notifyItemInserted(cities.size)
+        }
+
+        binding.recyclerCities.layoutManager =
+            LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         //recyclerCities.layoutManager = GridLayoutManager(this, 3)
         //recyclerCities.layoutManager = StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL)
 

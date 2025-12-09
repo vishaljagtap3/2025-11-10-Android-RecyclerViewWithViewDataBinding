@@ -65,6 +65,7 @@ class CitiesAdapter(
     }
 
     override fun getItemCount() = cities.size + advertisements.size
+    //override fun getItemCount() = 2
 
     override fun getItemViewType(position: Int): Int {
         return if (position % 2 == 0) {
